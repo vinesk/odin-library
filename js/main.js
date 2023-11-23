@@ -1,5 +1,19 @@
+// DOM selectors
+const form = document.querySelector(".form");
+const bookCards = document.querySelector(".book-cards");
+const AddButton = document.querySelector(".btn-add");
+const ReadButtons = document.querySelectorAll(".btn-read");
+const RemoveButtons = document.querySelectorAll(".btn-remove");
+
 // Book list
-const bookList = [];
+const bookList = [
+  {
+    title: "Titre",
+    author: "Author",
+    pages: "100",
+    isRead: false,
+  },
+];
 
 // Book constructor
 const Book = function (title, author, pages, isRead) {
@@ -9,60 +23,68 @@ const Book = function (title, author, pages, isRead) {
   this.isRead = isRead;
 };
 
-// New book
-const book1 = new Book("Titre 1", "Author 1", "100", false);
-const book2 = new Book("Titre 2", "Author 2", "100", true);
-const book3 = new Book("Titre 3", "Author 3", "100", false);
+// Add book to book list
+const addBookToBookList = (bookList, book) => {
+  bookList.push(book);
+};
 
-// Add new book to book list
-bookList.push(book1);
-bookList.push(book2);
-bookList.push(book3);
+// Generate book cards
+const generateBookCards = (books) => {
+  bookCards.innerHTML = "";
 
-// DOM selectors
-const bookCards = document.querySelector(".book-cards");
-const btnAdd = document.querySelector(".btn-add");
-const btnRead = document.querySelectorAll(".btn-read");
-
-const generateBookCards = (bookList) => {
-  for (const book of bookList) {
+  for (const book of books) {
     // Create elements
     const bookCard = document.createElement("div");
     const title = document.createElement("h2");
     const author = document.createElement("h3");
     const pages = document.createElement("p");
-    const btnRead = document.createElement("button");
-    const btnRemove = document.createElement("button");
+    const readButton = document.createElement("button");
+    const removeButton = document.createElement("button");
 
     // Add classes
     bookCard.classList.add("book-card");
     title.classList.add("title");
     author.classList.add("author");
     pages.classList.add("pages");
-    btnRead.classList.add(
+    readButton.classList.add(
       "btn",
       "btn-read",
       book.isRead ? "btn-green" : "btn-red"
     );
-    btnRemove.classList.add("btn", "btn-remove");
+    removeButton.classList.add("btn", "btn-remove");
 
     // Add text contents
     title.textContent = book.title;
     author.textContent = book.author;
     pages.textContent = `${book.pages} pages`;
-    btnRead.textContent = book.isRead ? "Read" : "Not read";
-    btnRemove.textContent = "Remove";
+    readButton.textContent = book.isRead ? "Read" : "Not read";
+    removeButton.textContent = "Remove";
 
     // Create card
     bookCard.appendChild(title);
     bookCard.appendChild(author);
     bookCard.appendChild(pages);
-    bookCard.appendChild(btnRead);
-    bookCard.appendChild(btnRemove);
+    bookCard.appendChild(readButton);
+    bookCard.appendChild(removeButton);
 
     // Add card
     bookCards.appendChild(bookCard);
   }
 };
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const newBookList = bookList;
+  const title = document.querySelector("#title").value;
+  const author = document.querySelector("#author").value;
+  const pages = document.querySelector("#pages").value;
+  const isRead = document.querySelector("#read").checked;
+
+  const book = new Book(title, author, pages, isRead);
+  addBookToBookList(newBookList, book);
+
+  generateBookCards(newBookList);
+});
 
 generateBookCards(bookList);
