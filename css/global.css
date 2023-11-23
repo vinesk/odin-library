@@ -96,12 +96,12 @@ h3 {
   background-color: var(--color-secondary);
 }
 
-.btn-read {
+.btn-green {
   color: var(--white);
   background-color: var(--green);
 }
 
-.btn-not-read {
+.btn-red {
   color: var(--white);
   background-color: var(--red);
 }
