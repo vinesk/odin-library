@@ -1,0 +1,27 @@
+.header {
+  padding: var(--space-xl);
+  color: var(--white);
+  background-color: var(--color-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header .burger-menu .burger {
+  width: calc(var(--font-size-xl) * 1.5);
+  height: var(--font-size-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.header .burger-menu .burger > * {
+  height: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--white);
+}
+
+.header .burger-menu .menu {
+  display: none;
+}

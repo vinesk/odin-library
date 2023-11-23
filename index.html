@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Metas -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title -->
+    <title>The Odin Project - Library</title>
+    <!-- Links -->
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="shortcut icon" href="./img/icon-odin.png" type="image/x-icon" />
+    <!-- Scripts -->
+    <script src="./js/main.js" defer></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <!-- Header - Title -->
+      <h1>My library</h1>
+      <!-- Header - Burger menu -->
+      <div class="burger-menu">
+        <!-- Header - Burger menu - Burger -->
+        <div class="burger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <!-- Header - Burger menu - Menu -->
+        <div class="menu"></div>
+      </div>
+    </header>
+    <!-- Main -->
+    <main class="main-container">
+      <!-- Main - List controls -->
+      <aside class="card-control">
+        <form class="form" action="#" method="post">
+          <!-- Main - List controls - Title -->
+          <div class="form-col">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" required />
+          </div>
+          <!-- Main - List controls - Author -->
+          <div class="form-col">
+            <label for="title">Author</label>
+            <input type="text" name="author" id="author" required />
+          </div>
+          <!-- Main - List controls - Pages -->
+          <div class="form-col">
+            <label for="pages">Pages</label>
+            <input type="number" name="pages" id="pages" required />
+          </div>
+          <!-- Main - List controls - Read -->
+          <div class="form-row">
+            <input type="checkbox" name="read" id="read" />
+            <label for="read">Read</label>
+          </div>
+          <button class="btn btn-add" type="submit">+ new book</button>
+        </form>
+      </aside>
+      <!-- Main - Book list -->
+      <section class="book-cards">
+        <div class="book-card">
+          <h2 class="title">Title</h2>
+          <h3 class="author">Author</h3>
+          <p class="pages">100 pages</p>
+          <button class="btn btn-not-read">Read</button>
+          <button class="btn btn-remove">Remove</button>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <a href="https://github.com/vinesk" target="_blank">
+        <span class="icon icon-github"></span>&nbsp;vinesk
+      </a>
+    </footer>
+  </body>
+</html>

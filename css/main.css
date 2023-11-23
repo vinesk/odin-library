@@ -1,0 +1,14 @@
+/* Reset */
+@import url("./reset.css");
+
+/* Global */
+@import url("./global.css");
+
+/* Header */
+@import url("./header.css");
+
+/* Main container */
+@import url("./main-container.css");
+
+/* Footer */
+@import url("./footer.css");
