@@ -5,15 +5,9 @@ const AddButton = document.querySelector(".btn-add");
 const ReadButtons = document.querySelectorAll(".btn-read");
 const RemoveButtons = document.querySelectorAll(".btn-remove");
 
-// Book list
-const bookList = [
-  {
-    title: "Titre",
-    author: "Author",
-    pages: "100",
-    isRead: false,
-  },
-];
+// Books
+const response = await fetch("../data/books.json");
+const books = await response.json();
 
 // Book constructor
 const Book = function (title, author, pages, isRead) {
@@ -24,8 +18,8 @@ const Book = function (title, author, pages, isRead) {
 };
 
 // Add book to book list
-const addBookToBookList = (bookList, book) => {
-  bookList.push(book);
+const addBookTobooks = (books, book) => {
+  books.push(book);
 };
 
 // Generate book cards
@@ -34,7 +28,7 @@ const generateBookCards = (books) => {
 
   for (const book of books) {
     // Create elements
-    const bookCard = document.createElement("div");
+    const bookCard = document.createElement("article");
     const title = document.createElement("h2");
     const author = document.createElement("h3");
     const pages = document.createElement("p");
@@ -75,16 +69,17 @@ const generateBookCards = (books) => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const newBookList = bookList;
+  const newbooks = Array.from(books);
+
   const title = document.querySelector("#title").value;
   const author = document.querySelector("#author").value;
   const pages = document.querySelector("#pages").value;
   const isRead = document.querySelector("#read").checked;
 
   const book = new Book(title, author, pages, isRead);
-  addBookToBookList(newBookList, book);
+  addBookTobooks(newbooks, book);
 
-  generateBookCards(newBookList);
+  generateBookCards(newbooks);
 });
 
-generateBookCards(bookList);
+generateBookCards(books);

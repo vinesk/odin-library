@@ -1,0 +1,23 @@
+{
+  "name": "odin-library",
+  "version": "1.0.0",
+  "description": "https://www.theodinproject.com/lessons/node-path-javascript-library",
+  "main": "main.js",
+  "scripts": {
+    "start": "http-server",
+    "dev": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinesk/odin-library.git"
+  },
+  "author": "vinesk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vinesk/odin-library/issues"
+  },
+  "homepage": "https://github.com/vinesk/odin-library#readme",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}
