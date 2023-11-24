@@ -44,11 +44,10 @@ const generateBookCards = (books) => {
     title.classList.add("title");
     author.classList.add("author");
     pages.classList.add("pages");
-    readButton.classList.add(
-      "btn",
-      "btn-read",
-      books[i].isRead ? "btn-green" : "btn-red"
-    );
+    readButton.classList.add("btn", "btn-read");
+    if (!books[i].isRead) {
+      readButton.classList.add("btn-red");
+    }
     readButton.dataset.id = i;
     removeButton.classList.add("btn", "btn-remove");
     removeButton.dataset.id = i;
@@ -70,7 +69,11 @@ const generateBookCards = (books) => {
     // Add card to the DOM
     bookCards.appendChild(bookCard);
   }
+
+  // Read book
   readBook();
+
+  // Remove book
   removeBook();
 };
 
@@ -112,7 +115,10 @@ const readBook = () => {
   const readButtons = document.querySelectorAll(".btn-read");
   for (const readButton of readButtons) {
     readButton.addEventListener("click", (e) => {
-      console.log(e.target.dataset.id);
+      const i = e.target.dataset.id;
+      books[i].isRead = !books[i].isRead;
+      bookCards.innerHTML = "";
+      generateBookCards(books);
     });
   }
 };
