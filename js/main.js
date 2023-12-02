@@ -1,74 +1,54 @@
-// DOM selectors
-const form = document.querySelector(".form");
-const plusButton = document.querySelector(".btn-plus");
-const minusButton = document.querySelector(".btn-minus");
-const bookCards = document.querySelector(".book-cards");
-
-// Books
-const books = [
-  {
-    title: "Titre 1",
-    author: "Author 1",
-    pages: "100",
-    isRead: false,
-  },
-  {
-    title: "Titre 2",
-    author: "Author 2",
-    pages: "150",
-    isRead: true,
-  },
-];
-
-// Book constructor
-const Book = function (title, author, pages, isRead) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.isRead = isRead;
-};
-
-// Generate book cards
-const generateBookCards = (books) => {
-  for (let i = 0; i < books.length; i++) {
-    // Create elements
-    const bookCard = document.createElement("article");
-    const title = document.createElement("h2");
-    const author = document.createElement("h3");
-    const pages = document.createElement("p");
-    const readButton = document.createElement("button");
-    const removeButton = document.createElement("button");
-
-    // Add attributes
-    bookCard.classList.add("book-card");
-    title.classList.add("title");
-    author.classList.add("author");
-    pages.classList.add("pages");
-    readButton.classList.add("btn", "btn-read");
-    if (!books[i].isRead) {
-      readButton.classList.add("btn-red");
-    }
-    readButton.dataset.id = i;
-    removeButton.classList.add("btn", "btn-remove");
-    removeButton.dataset.id = i;
-
-    // Add text contents
-    title.textContent = books[i].title;
-    author.textContent = books[i].author;
-    pages.textContent = `${books[i].pages} pages`;
-    readButton.textContent = books[i].isRead ? "Read" : "Not read";
-    removeButton.textContent = "Remove";
-
-    // Create card
-    bookCard.appendChild(title);
-    bookCard.appendChild(author);
-    bookCard.appendChild(pages);
-    bookCard.appendChild(readButton);
-    bookCard.appendChild(removeButton);
-
-    // Add card to the DOM
-    bookCards.appendChild(bookCard);
+// Book
+class Book {
+  constructor(
+    title = "Unkown",
+    author = "Unkown",
+    pages = "0",
+    isRead = false
+  ) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.isRead = isRead;
   }
+}
+
+// Library
+class Library {
+  constructor() {
+    this.books = [];
+  }
+
+  // Add book
+  addBook(newBook) {
+    if (!this.isInMyLibrary(newBook)) {
+      this.books.push(newBook);
+    }
+  }
+
+  // Is in my library
+  isInMyLibrary(newBook) {
+    return this.books.some((book) => book.title === newBook.title);
+  }
+
+  // Remove book
+  removeBook(title) {
+    this.books = this.books.filter((book) => book.title !== title);
+  }
+}
+
+const myLibrary = new Library();
+
+// Update book cards
+const updateBookCards = () => {
+  const bookCards = document.querySelector(".book-cards");
+  const books = myLibrary.books;
+
+  bookCards.innerHTML = "";
+  books.forEach((book) => {
+    const bookCard = createBookCard(book);
+    bookCards.appendChild(bookCard);
+  });
 
   // Read book
   readBook();
@@ -77,8 +57,47 @@ const generateBookCards = (books) => {
   removeBook();
 };
 
+// Create book cards
+const createBookCard = (book) => {
+  // Create elements
+  const bookCard = document.createElement("article");
+  const title = document.createElement("h2");
+  const author = document.createElement("h3");
+  const pages = document.createElement("p");
+  const readBtn = document.createElement("button");
+  const removeBtn = document.createElement("button");
+
+  // Add attributes
+  bookCard.classList.add("book-card");
+  title.classList.add("title");
+  author.classList.add("author");
+  pages.classList.add("pages");
+  readBtn.classList.add("btn", "btn-read");
+  if (!book.isRead) {
+    readBtn.classList.add("btn-red");
+  }
+  removeBtn.classList.add("btn", "btn-remove");
+
+  // Add text contents
+  title.textContent = book.title;
+  author.textContent = book.author;
+  pages.textContent = `${book.pages} pages`;
+  readBtn.textContent = book.isRead ? "Read" : "Not read";
+  removeBtn.textContent = "Remove";
+
+  // Create card
+  bookCard.appendChild(title);
+  bookCard.appendChild(author);
+  bookCard.appendChild(pages);
+  bookCard.appendChild(readBtn);
+  bookCard.appendChild(removeBtn);
+
+  return bookCard;
+};
+
 // Add book
 const addBook = () => {
+  const form = document.querySelector(".form");
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const title = document.querySelector("#title").value;
@@ -86,57 +105,62 @@ const addBook = () => {
     const pages = document.querySelector("#pages").value;
     const isRead = document.querySelector("#read").checked;
     const book = new Book(title, author, pages, isRead);
-    books.push(book);
-    bookCards.innerHTML = "";
-    generateBookCards(books);
+    myLibrary.addBook(book);
+    updateBookCards();
   });
 };
 
 // Sort in ascending order
 const sortInAscendingOrder = () => {
+  // DOM selector
+  const plusButton = document.querySelector(".btn-plus");
+
   plusButton.addEventListener("click", () => {
+    const books = myLibrary.books;
     books.sort((a, b) => (a.title < b.title ? -1 : 1));
-    bookCards.innerHTML = "";
-    generateBookCards(books);
+    updateBookCards();
   });
 };
 
 // Sort in descending order
 const sortInDescendingOrder = () => {
+  // DOM selectors
+  const minusButton = document.querySelector(".btn-minus");
+
   minusButton.addEventListener("click", () => {
+    const books = myLibrary.books;
     books.sort((a, b) => (a.title > b.title ? -1 : 1));
-    bookCards.innerHTML = "";
-    generateBookCards(books);
+    updateBookCards();
   });
 };
 
 // Read book
 const readBook = () => {
-  const readButtons = document.querySelectorAll(".btn-read");
-  for (const readButton of readButtons) {
-    readButton.addEventListener("click", (e) => {
-      const i = e.target.dataset.id;
-      books[i].isRead = !books[i].isRead;
-      bookCards.innerHTML = "";
-      generateBookCards(books);
+  const readBtns = document.querySelectorAll(".btn-read");
+  const books = myLibrary.books;
+
+  readBtns.forEach((readBtn, index) => {
+    readBtn.addEventListener("click", () => {
+      books[index].isRead = !books[index].isRead;
+      updateBookCards();
     });
-  }
+  });
 };
 
 // Remove book
 const removeBook = () => {
-  const removeButtons = document.querySelectorAll(".btn-remove");
-  for (const removeButton of removeButtons) {
-    removeButton.addEventListener("click", (e) => {
-      books.splice(e.target.dataset.id, 1);
-      bookCards.innerHTML = "";
-      generateBookCards(books);
+  const removeBtns = document.querySelectorAll(".btn-remove");
+  const books = myLibrary.books;
+
+  removeBtns.forEach((removeBtn, index) => {
+    removeBtn.addEventListener("click", () => {
+      books.splice(index, 1);
+      updateBookCards();
     });
-  }
+  });
 };
 
-// First display
-generateBookCards(books);
+updateBookCards();
 addBook();
 sortInAscendingOrder();
 sortInDescendingOrder();
